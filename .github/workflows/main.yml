@@ -48,10 +48,16 @@ jobs:
       # - name: Configurar o kubectl
       #   run: aws eks update-kubeconfig --name eks-aula
 
+      - name: Instala kubectl no runner
+        shell: bash
+        run: |
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
       - name: Deploy dos manifestos no Kubernetes
         uses: Azure/k8s-deploy@v5
         with:
           manifests: |
               ./k8s/deployment.yaml
           images: |
-              wcruzbr/conversao-distancia:v${{ github.run_number }}
+              ${{ vars.DOCKERHUB_USERNAME }}/conversao-distancia:v${{ github.run_number }}
