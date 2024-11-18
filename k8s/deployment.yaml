@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: conversao-distancia
 spec:
+  serviceAccountName: github-sa
   replicas: 3
   selector:
     matchLabels:
