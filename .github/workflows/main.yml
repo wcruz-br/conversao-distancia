@@ -65,6 +65,7 @@ jobs:
 
       - name: Configura o contexto do Kubernetes
         run: | 
+          mkdir -p $HOME/.kube
           echo "${{ secrets.KUBECONFIG_GITHUB_SA }}" > $HOME/.kube/config
 
       - name: Deploy dos manifestos no Kubernetes
