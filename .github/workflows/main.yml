@@ -8,6 +8,7 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Obter o código do projeto
         uses: actions/checkout@v4
@@ -31,6 +32,7 @@ jobs:
   cd:
     runs-on: [self-hosted, linux, x64]
     needs: [ci]
+    timeout-minutes: 5
     permissions:
       id-token: write
       contents: read
