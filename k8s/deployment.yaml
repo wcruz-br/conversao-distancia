@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: conversao-distancia
 spec:
-  serviceAccountName: github-sa
   replicas: 3
   selector:
     matchLabels:
@@ -13,6 +12,7 @@ spec:
       labels:
         app: conversao-distancia
     spec:
+      serviceAccountName: github-sa
       containers:
       - name: conversao-distancia
         image: wcruzbr/conversao-distancia:v2
