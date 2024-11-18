@@ -57,7 +57,9 @@ jobs:
       - name: Deploy dos manifestos no Kubernetes
         uses: Azure/k8s-deploy@v5
         with:
+          namespace: default
           manifests: |
               ./k8s/deployment.yaml
           images: |
               ${{ vars.DOCKERHUB_USERNAME }}/conversao-distancia:v${{ github.run_number }}
+          service-account: github-sa
