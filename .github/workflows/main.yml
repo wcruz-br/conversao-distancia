@@ -68,6 +68,12 @@ jobs:
           mkdir -p $HOME/.kube
           echo "${{ secrets.KUBECONFIG_GITHUB_SA }}" > $HOME/.kube/config
 
+      - name: Verify K8s context
+        run: | 
+          kubectl config get-contexts
+          kubectl config use-context github-sa-context
+          kubectl get nodes
+
       - name: Deploy dos manifestos no Kubernetes
         uses: Azure/k8s-deploy@v5
         with:
