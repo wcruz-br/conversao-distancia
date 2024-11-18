@@ -56,12 +56,16 @@ jobs:
           curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
           sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
+      # - name: Configura o contexto do Kubernetes
+      #   uses: azure/k8s-set-context@v1
+      #   with:
+      #     method: kubeconfig
+      #     kubeconfig: ${{ secrets.KUBECONFIG_GITHUB_SA }}
+      #     context: github-sa-context
+
       - name: Configura o contexto do Kubernetes
-        uses: azure/k8s-set-context@v1
-        with:
-          method: kubeconfig
-          kubeconfig: ${{ secrets.KUBECONFIG_GITHUB_SA }}
-          context: github-sa-context
+        run: | 
+          echo "${{ secrets.KUBECONFIG_GITHUB_SA }}" > $HOME/.kube/config
 
       - name: Deploy dos manifestos no Kubernetes
         uses: Azure/k8s-deploy@v5
