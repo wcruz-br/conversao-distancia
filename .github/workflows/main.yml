@@ -20,8 +20,8 @@ jobs:
       - name: Construção e envio da imagem Docker
         uses: docker/build-push-action@v6
         with:
-          context: ./src
-          file: ./src/Dockerfile
+          context: .
+          file: ./Dockerfile
           push: true
           tags: |
             ${{ vars.DOCKERHUB_USERNAME }}/conversao-distancia:latest
