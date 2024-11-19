@@ -30,7 +30,7 @@ jobs:
             ${{ vars.DOCKERHUB_USERNAME }}/conversao-distancia:v${{ github.run_number }}
 
   cd:
-    runs-on: [self-hosted, linux, x64]
+    runs-on: self-hosted
     needs: [ci]
     timeout-minutes: 5
     permissions:
@@ -56,13 +56,6 @@ jobs:
           curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
           sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
-      - name: Configura o contexto do Kubernetes
-        uses: azure/k8s-set-context@v1
-        with:
-          method: kubeconfig
-          kubeconfig: ${{ secrets.KUBECONFIG_GITHUB_SA }}
-          context: github-sa-context
-
       # - name: Configura o contexto do Kubernetes
       #   run: | 
       #     mkdir -p $HOME/.kube
@@ -73,6 +66,13 @@ jobs:
       #     kubectl config get-contexts
       #     kubectl config use-context github-sa-context
       #     kubectl get nodes
+
+      - name: Configura o contexto do Kubernetes
+        uses: azure/k8s-set-context@v1
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBECONFIG_GITHUB_SA }}
+          context: github-sa-context
 
       - name: Deploy dos manifestos no Kubernetes
         uses: Azure/k8s-deploy@v5
