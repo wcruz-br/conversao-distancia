@@ -23,6 +23,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
+          build-args: |
+            VERSAO=${{ github.run_number }}
           file: ./Dockerfile
           push: true
           tags: |
@@ -50,22 +52,11 @@ jobs:
       # - name: Configurar o kubectl
       #   run: aws eks update-kubeconfig --name eks-aula
 
-      - name: Instala kubectl no runner
+      - name: Instala kubectl no local runner
         shell: bash
         run: |
           curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
           sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-
-      # - name: Configura o contexto do Kubernetes
-      #   run: | 
-      #     mkdir -p $HOME/.kube
-      #     echo "${{ secrets.KUBECONFIG_GITHUB_SA }}" > $HOME/.kube/config
-
-      # - name: Verify K8s context
-      #   run: | 
-      #     kubectl config get-contexts
-      #     kubectl config use-context github-sa-context
-      #     kubectl get nodes
 
       - name: Configura o contexto do Kubernetes
         uses: azure/k8s-set-context@v1
